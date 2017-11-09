@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.administrator.administrator.eataway.activity.SettingActivity"
+    android:background="@color/color_gray">
+    <com.administrator.administrator.eataway.view.TopBar
+        android:id="@+id/tp_activity_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_activity_setting_yuyan"-->
+        <!--android:layout_marginBottom="1dp"-->
+        <!--style="@style/PersonPageList"-->
+        <!--android:layout_below="@id/tp_activity_setting">-->
+        <!--<TextView-->
+            <!--android:text="@string/dang_qian_yu_yan"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"/>-->
+        <!--<ImageView android:id="@+id/iv_yuyan"-->
+            <!--style="@style/PersonPageMoreIcon"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_yuyan"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toLeftOf="@id/iv_yuyan"-->
+            <!--android:layout_marginRight="5dp" />-->
+    <!--</RelativeLayout>-->
+    <RelativeLayout
+        android:id="@+id/rl_activity_setting_about_us"
+        android:layout_marginBottom="20dp"
+        style="@style/PersonPageList"
+        android:layout_below="@id/tp_activity_setting">
+        <TextView
+            android:text="@string/guan_yu_wo_men"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
+        <ImageView style="@style/PersonPageMoreIcon"/>
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_activity_setting_sign_out"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/shape_white"
+        android:layout_below="@id/rl_activity_setting_about_us"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/exit"
+        android:textAllCaps="false"/>
+</RelativeLayout>

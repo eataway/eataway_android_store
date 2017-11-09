@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.administrator.administrator.eataway.activity.ReplyActivity">
+
+    <com.administrator.administrator.eataway.view.TopBar
+        android:id="@+id/tp_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/et_activity_reply"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/tp_reply"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/color_gray"
+        android:hint="@string/qing_shu_ru_nin_de_hui_fu"
+        android:gravity="top"
+        android:textSize="15sp"/>
+    <Button
+        android:id="@+id/btn_reply_publication"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/shape_blue"
+        android:text="@string/text_ok"
+        android:textColor="@color/color_white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

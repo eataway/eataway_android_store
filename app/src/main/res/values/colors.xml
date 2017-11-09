@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!--全局相关-->
+    <color name="color_blue">#3d8fe3</color>
+    <color name="color_white">#fff</color>
+    <color name="color_orange">#ffa217</color>
+    <color name="color_gray">#f1f1f1</color>
+    <color name="text_black">#333333</color>
+    <color name="text_gray">#999999</color>
+    <color name="list_line">#ebebeb</color>
+    <color name="color_red">#fc4141</color>
+    <color name="tou_ming">#00000000</color>
+</resources>

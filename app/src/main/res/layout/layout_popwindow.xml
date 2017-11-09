@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="100dp"
+    android:layout_height="wrap_content" android:background="@color/color_gray"
+    android:layout_gravity="right">
+    <TextView
+        android:id="@+id/tv_pop_new_menu"
+        android:text="@string/xin_zeng_cai_dan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/color_white"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_pop_menu_order"
+        android:text="@string/cai_dan_shun_xu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/color_white"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"/>
+</LinearLayout>

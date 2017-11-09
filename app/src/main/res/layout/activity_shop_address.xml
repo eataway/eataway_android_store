@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.administrator.administrator.eataway.activity.ShopAddressListActivity">
+    <com.administrator.administrator.eataway.view.TopBar
+        android:id="@+id/tp_shop_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
+    <RelativeLayout android:id="@+id/rl_activity_shop_address_city"
+        style="@style/PersonPageList">
+        <TextView
+            android:id="@+id/tv_certification_up_shop_name"
+            android:text="@string/fan_dian_ming_cheng"
+            android:textColor="@color/text_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingRight="10dp"/>
+        <TextView
+            android:id="@+id/tv_activity_certification_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/a_de_lai_de"
+            android:textColorHint="@color/text_gray"
+            android:textSize="15sp"
+            android:background="@color/color_white"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+</LinearLayout>

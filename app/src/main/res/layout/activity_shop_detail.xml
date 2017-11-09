@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_gray"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context="com.administrator.administrator.eataway.activity.ShopDetailActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:id="@+id/iv_activity_shop_detail_shop_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
+        <ImageView
+            android:id="@+id/iv_activity_shop_detail_back"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:background="@drawable/img_icon_back_white"
+            android:layout_margin="10dp"
+            android:paddingRight="10dp"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:id="@+id/ll_activity_dish_detail_shop_change"
+            android:orientation="horizontal"
+            android:background="#8d000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_activity_shop_detail_shop_pic"
+            android:layout_alignRight="@id/iv_activity_shop_detail_shop_pic"
+            android:padding="5dp"
+            android:gravity="center">
+            <ImageView
+                android:background="@drawable/img_icon_modify_white"
+                android:layout_width="15dp"
+                android:layout_height="15dp"/>
+            <TextView
+                android:id="@+id/tv_activity_shop_detail_shop_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/xiu_gai_dian_pu_zhu_tu"
+                android:textColor="@color/color_white"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="3">
+        <RelativeLayout
+            android:id="@+id/rl_activity_shop_detail_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/color_white"
+            android:padding="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cimg_activity_shop_detail_shop_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:id="@+id/tv_activity_shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@id/cimg_activity_shop_detail_shop_icon" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_activity_shop_name"
+                android:background="@color/color_gray" />
+
+            <TextView
+                android:id="@+id/tv_activity_shop_detail_introduce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cimg_activity_shop_detail_shop_icon"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.5"
+                android:maxLines="2"
+                android:textColor="@color/text_gray"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="15dp"
+                android:layout_alignBottom="@id/tv_activity_shop_detail_introduce"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/img_icon_more_gary" />
+        </RelativeLayout>
+
+        <RelativeLayout android:id="@+id/rl_activity_shop_detail_location"
+            style="@style/PersonPageList">
+            <ImageView style="@style/PersonPageListIcon"
+                android:id="@+id/iv_shop_detail_location"
+                android:background="@drawable/img_icon_location"/>
+            <TextView
+                android:id="@+id/tv_shop_detail_location"
+                android:layout_toRightOf="@id/iv_shop_detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView style="@style/PersonPageMoreIcon"
+                android:background="@drawable/img_icon_more_gary"/>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/rl_activity_shop_detail_phone"
+            style="@style/PersonPageList">
+            <ImageView style="@style/PersonPageListIcon"
+                android:id="@+id/iv_shop_detail_phone"
+                android:background="@drawable/img_icon_phone"/>
+            <TextView
+                android:id="@+id/tv_shop_detail_phone"
+                android:layout_toRightOf="@id/iv_shop_detail_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView style="@style/PersonPageMoreIcon"
+                android:background="@drawable/img_icon_more_gary"/>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/rl_activity_shop_detail_time"
+            style="@style/PersonPageList">
+            <ImageView style="@style/PersonPageListIcon"
+                android:id="@+id/iv_shop_detail_time"
+                android:background="@drawable/img_icon_time"/>
+            <TextView
+                android:id="@+id/tv_shop_detail_time"
+                android:layout_toRightOf="@id/iv_shop_detail_time"
+                android:text="@string/qing_she_zhi_ying_ye_shi_jian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView style="@style/PersonPageMoreIcon"
+                android:background="@drawable/img_icon_more_gary"/>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/rl_activity_shop_detail_distance"
+            style="@style/PersonPageList">
+            <ImageView style="@style/PersonPageListIcon"
+                android:id="@+id/iv_shop_detail_moto"
+                android:background="@drawable/img_icon_moto"/>
+            <TextView
+                android:layout_toRightOf="@id/iv_shop_detail_moto"
+                android:text="@string/pei_song_ju_li"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView style="@style/PersonPageMoreIcon"
+                android:id="@+id/iv_shop_detail_more_moto"
+                android:background="@drawable/img_icon_more_gary"/>
+            <TextView
+                android:id="@+id/tv_activity_shop_detail_delivery_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/iv_shop_detail_more_moto"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/rl_activity_shop_detail_fee"
+            style="@style/PersonPageList">
+            <ImageView style="@style/PersonPageListIcon"
+                android:id="@+id/tv_shop_detail_fee"
+                android:background="@drawable/img_icon_fee"/>
+            <TextView
+                android:text="@string/pei_song_fei"
+                android:layout_toRightOf="@id/tv_shop_detail_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView style="@style/PersonPageMoreIcon"
+                android:id="@+id/iv_shop_detail_more_fee"
+                android:background="@drawable/img_icon_more_gary"/>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/rl_activity_shop_detail_min_fee"
+            style="@style/PersonPageList">
+            <ImageView style="@style/PersonPageListIcon"
+                android:id="@+id/tv_shop_detail_min_fee"
+                android:background="@drawable/img_icon_fee"/>
+            <TextView
+                android:text="@string/zui_di_pei_song_jin_e"
+                android:layout_toRightOf="@id/tv_shop_detail_min_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView style="@style/PersonPageMoreIcon"
+                android:id="@+id/iv_shop_detail_more_min_fee"
+                android:background="@drawable/img_icon_more_gary"/>
+            <TextView
+                android:id="@+id/tv_activity_shop_detail_min_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/iv_shop_detail_more_min_fee"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+        <RelativeLayout
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_order_list_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Number:ZX1234567"/>
+            <TextView
+                android:id="@+id/tv_order_list_price"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+$15"
+                android:textColor="@color/color_blue"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_order_list_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2017-06-12 16:10"
+                android:textSize="10sp"
+                android:textColor="@color/text_gray"/>
+            <TextView
+                android:id="@+id/tv_order_list_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已到账"
+                android:textSize="10sp"
+                android:textColor="@color/text_gray"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

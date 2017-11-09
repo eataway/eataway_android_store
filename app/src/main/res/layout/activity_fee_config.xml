@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.administrator.administrator.eataway.activity.FeeConfigActivity">
+    <com.administrator.administrator.eataway.view.TopBar
+        android:id="@+id/tp_fee_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout android:id="@+id/rl_activity_fee_config_minprice"
+        style="@style/PersonPageList"
+        android:layout_below="@id/tp_fee_config">
+        <TextView
+            android:id="@+id/tv_fee_config_maxprice_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/max_price_start"
+            android:textColor="@color/text_black"
+            android:clickable="false"/>
+        <TextView
+            android:id="@+id/tv_fee_config_maxprice_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_fee_config_maxprice_start"
+            android:text="$0"
+            android:textColor="@color/color_blue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:clickable="false"/>
+        <TextView
+            android:id="@+id/tv_fee_config_maxprice_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_fee_config_maxprice_info"
+            android:text="@string/max_price_end"
+            android:clickable="false"/>
+        <ImageView style="@style/PersonPageMoreIcon" />
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/rl_activity_fee_config_maxdistance"
+        style="@style/PersonPageList"
+        android:layout_below="@id/rl_activity_fee_config_minprice">
+        <TextView
+            android:id="@+id/tv_fee_config_mindistance_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="$0"
+            android:textColor="@color/color_blue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:clickable="false"/>
+        <TextView
+            android:id="@+id/tv_fee_config_mindistance_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/min_distance_start"
+            android:textColor="@color/text_black"
+            android:clickable="false"
+            android:layout_toRightOf="@id/tv_fee_config_mindistance_price"/>
+        <TextView
+            android:id="@+id/tv_fee_config_mindistance_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_fee_config_mindistance_start"
+            android:text="0km"
+            android:textColor="@color/color_blue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:clickable="false"/>
+        <TextView
+            android:id="@+id/tv_fee_config_mindistance_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_fee_config_mindistance_info"
+            android:text="@string/min_distance_end"
+            android:clickable="false"/>
+        <ImageView style="@style/PersonPageMoreIcon" />
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/rl_activity_fee_config_lkprice"
+        style="@style/PersonPageList"
+        android:layout_below="@id/rl_activity_fee_config_maxdistance">
+        <TextView
+            android:id="@+id/tv_fee_config_lkprice_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="1km — "
+            android:textColor="@color/text_black"
+            android:clickable="false"/>
+        <TextView
+            android:id="@+id/tv_fee_config_lkprice_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_fee_config_lkprice_start"
+            android:text="$0"
+            android:textColor="@color/color_blue"
+            android:layout_marginLeft="5dp"
+            android:clickable="false"/>
+        <ImageView style="@style/PersonPageMoreIcon" />
+    </RelativeLayout>
+
+    <com.administrator.administrator.eataway.view.BottomBar
+        android:id="@+id/bb_fee_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

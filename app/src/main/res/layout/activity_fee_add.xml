@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.administrator.administrator.eataway.activity.FeeAddActivity">
+    <com.administrator.administrator.eataway.view.TopBar
+        android:id="@+id/tp_fee_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout android:id="@+id/rl_fee_add_minprice"
+        style="@style/PersonPageList">
+        <TextView
+            android:id="@+id/tv_fee_add_minprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/zui_xiao_jin_e"
+            android:layout_centerVertical="true" />
+        <ImageView style="@style/PersonPageMoreIcon"/>
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/rl_fee_add_maxdistance"
+        style="@style/PersonPageList">
+        <TextView
+            android:id="@+id/tv_fee_add_maxdistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/zui_da_ju_li"
+            android:layout_centerVertical="true" />
+        <ImageView style="@style/PersonPageMoreIcon"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/list_line">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/list_line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/rl_person_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/img_person_bg">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cimg_person_user_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/img_shop_icon_default" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/cimg_person_user_icon">
+
+                <TextView
+                    android:id="@+id/tv_person_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/color_white" />
+
+                <TextView
+                    android:id="@+id/tv_person_user_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/tv_person_user_name"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/color_white" />
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginRight="40dp"
+                    android:background="@drawable/img_icon_more_white" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/color_white"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_sales_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="0"
+                        android:textSize="20sp"
+                        android:textColor="@color/color_blue"
+                        android:layout_marginBottom="5dp"/>
+                    <TextView
+                        android:id="@+id/tv_sales"
+                        android:layout_below="@id/tv_sales_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/ding_dan_shu"
+                        android:textSize="10sp"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_gray"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_income_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$0"
+                        android:textSize="20sp"
+                        android:textColor="@color/color_blue"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+                    <TextView
+                        android:id="@+id/tv_income"
+                        android:layout_below="@id/tv_income_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/xiao_shou_e"
+                        android:textSize="10sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/rl_person_open"
+                style="@style/PersonPageList"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/img_person_open_icon"
+                    style="@style/PersonPageListIcon"
+                    android:background="@drawable/img_person_icon_01" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/img_person_open_icon"
+                    android:gravity="center_vertical"
+                    android:text="@string/shi_fou_ying_ye" />
+
+                <ToggleButton
+                    android:id="@+id/tb_is_open"
+                    android:layout_width="52dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textOff=""
+                    android:textOn=""
+                    android:background="@drawable/img_switch_icon_off"/>
+            </RelativeLayout>
+
+            <RelativeLayout android:id="@+id/rl_person_income"
+                style="@style/PersonPageList">
+                <ImageView
+                    android:id="@+id/img_person_income_icon"
+                    android:background="@drawable/img_person_icon_02"
+                    style="@style/PersonPageListIcon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/shou_ru_ming_xi"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/img_person_income_icon"
+                    android:gravity="center_vertical"/>
+                <ImageView style="@style/PersonPageMoreIcon"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_person_certification"
+                style="@style/PersonPageList">
+                <ImageView
+                    android:id="@+id/img_person_certification_icon"
+                    android:background="@drawable/img_person_icon_03"
+                    style="@style/PersonPageListIcon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/ren_zheng_zhuang_tai"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/img_person_certification_icon"
+                    android:gravity="center_vertical"/>
+                <ImageView style="@style/PersonPageMoreIcon"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_person_settings"
+                style="@style/PersonPageList">
+                <ImageView
+                    android:id="@+id/img_person_settings_icon"
+                    android:background="@drawable/img_person_icon_04"
+                    style="@style/PersonPageListIcon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/xi_tong_she_zhi"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/img_person_settings_icon"
+                    android:gravity="center_vertical"/>
+                <ImageView style="@style/PersonPageMoreIcon"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_person_feedback"
+                style="@style/PersonPageList">
+                <ImageView
+                    android:id="@+id/img_person_feedback_icon"
+                    android:background="@drawable/img_person_icon_05"
+                    style="@style/PersonPageListIcon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/wen_ti_fan_kui"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/img_person_feedback_icon"
+                    android:gravity="center_vertical"/>
+                <ImageView style="@style/PersonPageMoreIcon"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>
