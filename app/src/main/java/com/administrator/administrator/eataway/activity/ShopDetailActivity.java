@@ -121,6 +121,8 @@ public class ShopDetailActivity extends BaseActivity {
     private CustomDialog dialog;
     private CustomFormatDialog formatDialog;
 
+    private boolean isDestory = false;
+
 
     @Override
     protected int getLayoutId() {
@@ -137,7 +139,6 @@ public class ShopDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         initDialog();
         initImagePicker();
-        initDialog();
         StatusBarUtil.setTranslucentForImageView(this, 0, ivActivityShopDetailBack);
     }
 
@@ -145,40 +146,45 @@ public class ShopDetailActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (MyApplication.getLogin()!= null) {
+            showDialog();
             HttpUtils httpUtils = new HttpUtils(Contants.URL_SHOPMSG) {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    hidDialog();
                     Toast.makeText(ShopDetailActivity.this, R.string.please_check_your_network_connection,
                             Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
+                    hidDialog();
                     try {
-                        JSONObject o = new JSONObject(response);
-                        int status = o.getInt("status");
-                        if (status == 1) {
-                            bean = new Gson().fromJson(response, ShopBean.class);
-                            GlideUtils.load(ShopDetailActivity.this, bean.getMsg().getShopphoto(), ivActivityShopDetailShopPic, GlideUtils.Shape.ShopPic);
-                            GlideUtils.load(ShopDetailActivity.this, bean.getMsg().getShophead(), cimgActivityShopDetailShopIcon, GlideUtils.Shape.ShopIcon);
-                            tvActivityShopName.setText(bean.getMsg().getShopname());
-                            tvActivityShopDetailIntroduce.setText(bean.getMsg().getContent());
-                            if (!" ".equals(bean.getMsg().getGotime())) {
-                                tvShopDetailTime.setText(bean.getMsg().getGotime());
-                            } else {
-                                tvShopDetailTime.setText(getString(R.string.qing_she_zhi_ying_ye_shi_jian));
+                        if (!isDestory) {
+                            JSONObject o = new JSONObject(response);
+                            int status = o.getInt("status");
+                            if (status == 1) {
+                                bean = new Gson().fromJson(response, ShopBean.class);
+                                GlideUtils.load(ShopDetailActivity.this, bean.getMsg().getShopphoto(), ivActivityShopDetailShopPic, GlideUtils.Shape.ShopPic);
+                                GlideUtils.load(ShopDetailActivity.this, bean.getMsg().getShophead(), cimgActivityShopDetailShopIcon, GlideUtils.Shape.ShopIcon);
+                                tvActivityShopName.setText(bean.getMsg().getShopname());
+                                tvActivityShopDetailIntroduce.setText(bean.getMsg().getContent());
+                                if (bean.getMsg().getGotime() != null && !"".equals(bean.getMsg().getGotime())) {
+                                    tvShopDetailTime.setText(bean.getMsg().getGotime());
+                                } else {
+                                    tvShopDetailTime.setText(getString(R.string.qing_she_zhi_ying_ye_shi_jian));
+                                }
+                                tvShopDetailPhone.setText(bean.getMsg().getMobile());
+                                tvShopDetailLocation.setText(bean.getMsg().getDetailed_address());
+                                tvActivityShopDetailDeliveryDistance.setText(bean.getMsg().getLongX() + "km");
+                                tvActivityShopDetailMinFee.setText("$" + bean.getMsg().getLmoney());
+                            } else if (status == 0) {
+                                Toast.makeText(ShopDetailActivity.this, R.string.please_check_your_network_connection,
+                                        Toast.LENGTH_SHORT).show();
+                            } else if (status == 9) {
+                                Toast.makeText(ShopDetailActivity.this, R.string.token_yan_zheng_shi_bai,
+                                        Toast.LENGTH_SHORT).show();
+                                MyApplication.saveLogin(null);
                             }
-                            tvShopDetailPhone.setText(bean.getMsg().getMobile());
-                            tvShopDetailLocation.setText(bean.getMsg().getDetailed_address());
-                            tvActivityShopDetailDeliveryDistance.setText(bean.getMsg().getLongX() + "km");
-                            tvActivityShopDetailMinFee.setText("$" + bean.getMsg().getLmoney());
-                        } else if (status == 0) {
-                            Toast.makeText(ShopDetailActivity.this, R.string.please_check_your_network_connection,
-                                    Toast.LENGTH_SHORT).show();
-                        } else if (status == 9) {
-                            Toast.makeText(ShopDetailActivity.this, R.string.token_yan_zheng_shi_bai,
-                                    Toast.LENGTH_SHORT).show();
-                            MyApplication.saveLogin(null);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -189,8 +195,16 @@ public class ShopDetailActivity extends BaseActivity {
             httpUtils.addParam("token", MyApplication.getLogin().getToken());
             httpUtils.clicent();
         }else {
+            ToastUtils.showToast(R.string.token_yan_zheng_shi_bai, this);
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        isDestory = true;
+        super.onDestroy();
     }
 
     //关于ImagePicker
@@ -420,23 +434,20 @@ public class ShopDetailActivity extends BaseActivity {
                 break;
             case R.id.rl_activity_shop_detail_time:
                 if (bean != null) {
-                    goToActivity(TimeListShowActivity.class);
-//                    Bundle b = new Bundle();
-//                    if (!getString(R.string.qing_she_zhi_ying_ye_shi_jian).equals(tvShopDetailTime.getText())) {
-//                        String[] split = tvShopDetailTime.getText().toString().split("-");
-//                        b.putString("open", split[0]);
-//                        b.putString("close", split[1]);
-//                    } else {
-//                        b.putString("open", "00:00");
-//                        b.putString("close", "00:00");
-//                    }
-//                    goToActivity(ShopTimeConfigActivity.class, b);
+//                    goToActivity(TimeListShowActivity.class);
+                    Bundle b = new Bundle();
+                    if (!getString(R.string.qing_she_zhi_ying_ye_shi_jian).equals(tvShopDetailTime.getText())) {
+                        String[] split = tvShopDetailTime.getText().toString().split("-");
+                        b.putString("open", split[0]);
+                        b.putString("close", split[1]);
+                    } else {
+                        b.putString("open", "00:00");
+                        b.putString("close", "00:00");
+                    }
+                    goToActivity(ShopTimeConfigActivity.class, b);
                 } else {
                     ToastUtils.showToast(R.string.please_check_your_network_connection, mContext);
-//                    Toast.makeText(mContext, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
                 }
-
-//                goToActivity(ShopTimeConfigActivity.class);
                 break;
             case R.id.rl_activity_shop_detail_distance:
                 formatDialog = new CustomFormatDialog(this, R.style.MyDialog, CustomFormatDialog.CANCLE);

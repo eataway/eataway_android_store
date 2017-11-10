@@ -54,8 +54,6 @@ public class ShopIncomeAcitivity extends BaseActivity {
         initRecylerView();
         initTopBar();
         if (MyApplication.getLogin() != null) {
-            rvShopIncome.setVisibility(View.GONE);
-            rlNewsdetails.setVisibility(View.VISIBLE);
             page = 1;
             loadData();
         }else {
@@ -64,19 +62,17 @@ public class ShopIncomeAcitivity extends BaseActivity {
     }
 
     private void loadData() {
+        showDialog();
         HttpUtils httpUtils = new HttpUtils(Contants.URL_MINGXI) {
             @Override
             public void onError(Call call, Exception e, int id) {
+                hidDialog();
                 ToastUtils.showToast(R.string.please_check_your_network_connection,ShopIncomeAcitivity.this);
-//                Toast.makeText(ShopIncomeAcitivity.this, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
-                rvShopIncome.setVisibility(View.VISIBLE);
-                rlNewsdetails.setVisibility(View.GONE);
             }
 
             @Override
             public void onResponse(String response, int id) {
-                rvShopIncome.setVisibility(View.VISIBLE);
-                rlNewsdetails.setVisibility(View.GONE);
+                hidDialog();
                 try {
                     JSONObject o = new JSONObject(response);
                     int status = o.getInt("status");

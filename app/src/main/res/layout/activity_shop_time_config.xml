@@ -60,6 +60,7 @@
     </RelativeLayout>
 
     <RelativeLayout android:id="@+id/rl_shop_time_second_open"
+        android:visibility="gone"
         style="@style/PersonPageList">
         <TextView
             android:id="@+id/tv_shop_time_config_second_open"
@@ -80,6 +81,7 @@
             style="@style/PersonPageMoreIcon" />
     </RelativeLayout>
     <RelativeLayout android:id="@+id/rl_shop_time_second_close"
+        android:visibility="gone"
         style="@style/PersonPageList" android:layout_marginBottom="20dp">
         <TextView
             android:id="@+id/tv_shop_time_config_second_close"

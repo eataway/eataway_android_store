@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.administrator.administrator.eataway.MyApplication;
 import com.administrator.administrator.eataway.R;
 import com.administrator.administrator.eataway.activity.LoginActivity;
+import com.administrator.administrator.eataway.activity.MainActivity;
 import com.administrator.administrator.eataway.adapter.CommentListAdapter;
 import com.administrator.administrator.eataway.bean.CommentListBean;
 import com.administrator.administrator.eataway.comm.BaseFragment;
@@ -92,14 +93,17 @@ public class CommentPage extends BaseFragment {
     }
 
     private void initData() {
+        MainActivity.mainActivity.showDialog();
         HttpUtils httpUtils=new HttpUtils(Contants.URL_COMMENT) {
             @Override
             public void onError(Call call, Exception e, int id) {
+                MainActivity.mainActivity.hidDialog();
                 ToastUtils.showToast(R.string.please_check_your_network_connection,_mActivity);
             }
 
             @Override
             public void onResponse(String response, int id) {
+                MainActivity.mainActivity.hidDialog();
                 isfrist = 1;
                 try {
                     JSONObject js = new JSONObject(response);
@@ -139,6 +143,10 @@ public class CommentPage extends BaseFragment {
         if (login != null) {
             httpUtils.addParam("shopid",login.getShopId()).addParams("token",login.getToken()).addParams("page",page+"");
             httpUtils.clicent();
+        }else {
+            ToastUtils.showToast(R.string.token_yan_zheng_shi_bai, getContext());
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
         }
     }
 

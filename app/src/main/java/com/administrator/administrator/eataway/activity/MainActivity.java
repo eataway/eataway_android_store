@@ -127,7 +127,6 @@ public class MainActivity extends BaseActivity {
                 if (menuPage == null) {
                     menuPage = new MenuPage();
                 }
-                menuPage.initData();
                 fragment = menuPage;
                 tvActivityMainActivityMenu.setTextColor(getResources().getColor(R.color.color_blue));
                 ivActivityMainMenu.setBackgroundResource(R.mipmap.tab_icon_menu_sel);

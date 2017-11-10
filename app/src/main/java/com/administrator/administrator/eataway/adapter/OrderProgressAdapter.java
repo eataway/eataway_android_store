@@ -227,56 +227,90 @@ public class OrderProgressAdapter extends RecyclerView.Adapter<OrderProgressAdap
     }
 
     private void setJieDan(final String id, final OrderHolder holder, final int index) {
-        //条件选择器
-        if (items != null && items.size() > 0) {
-            pvOptions = new  OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
-                @Override
-                public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
-                    //返回的分别是三个级别的选中位置
-                    String tx = items.get(options1);
-                    HttpUtils httpUtils = new HttpUtils(Contants.URL_QUEREN) {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(context, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
-                        }
+        HttpUtils httpUtils = new HttpUtils(Contants.URL_QUEREN) {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Toast.makeText(context, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+            }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            try {
-                                JSONObject js = new JSONObject(response);
-                                int status = js.getInt("status");
-                                if (status == 1) {
-                                    holder.btnInProgress.setText(R.string.que_ren_song_da);
-                                    bean.getMsg().get(index).setState("2");
-                                } else if (status == 9) {
-                                    Toast.makeText(context, R.string.Please_Log_on_again, Toast.LENGTH_SHORT).show();
-                                    MyApplication.saveLogin(null);
-                                    context.startActivity(new Intent(context, LoginActivity.class));
-                                } else if (status == 3) {
-                                    Toast.makeText(context, R.string.chang_shi_jian_wei_cao_zuo_gai, Toast.LENGTH_SHORT).show();
-                                    bean.getMsg().remove(index);
-                                    notifyItemRemoved(index);
-                                    notifyDataSetChanged();
+            @Override
+            public void onResponse(String response, int id) {
+                try {
+                    JSONObject js = new JSONObject(response);
+                    int status = js.getInt("status");
+                    if (status == 1) {
+                        holder.btnInProgress.setText(R.string.que_ren_song_da);
+                        bean.getMsg().get(index).setState("2");
+                    } else if (status == 9) {
+                        Toast.makeText(context, R.string.Please_Log_on_again, Toast.LENGTH_SHORT).show();
+                        MyApplication.saveLogin(null);
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    } else if (status == 3) {
+                        Toast.makeText(context, R.string.chang_shi_jian_wei_cao_zuo_gai, Toast.LENGTH_SHORT).show();
+                        bean.getMsg().remove(index);
+                        notifyItemRemoved(index);
+                        notifyDataSetChanged();
 //                        notifyItemRangeChanged(index,bean.getMsg().size());
-                                } else {
-                                    Toast.makeText(context, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    httpUtils.addParam("orderid", id).addParams("shopid", MyApplication.getLogin().getShopId()).addParams("token", MyApplication.getLogin().getToken())
-                            .addParams("aftertime", tx);
-                    httpUtils.clicent();
+                    } else {
+                        Toast.makeText(context, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }).setTitleText("请选择送达所需时间")
-                    .setSubmitText(context.getString(R.string.text_ok))
-                    .setCancelText(context.getString(R.string.text_cancel))
-                    .build();
-            pvOptions.setPicker(items);
-            pvOptions.show();
-        }
+            }
+        };
+        httpUtils.addParam("orderid", id).addParams("shopid", MyApplication.getLogin().getShopId()).addParams("token", MyApplication.getLogin().getToken());
+        httpUtils.clicent();
+        //条件选择器
+//        if (items != null && items.size() > 0) {
+//            pvOptions = new  OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
+//                @Override
+//                public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+//                    //返回的分别是三个级别的选中位置
+//                    String tx = items.get(options1);
+//                    HttpUtils httpUtils = new HttpUtils(Contants.URL_QUEREN) {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            Toast.makeText(context, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            try {
+//                                JSONObject js = new JSONObject(response);
+//                                int status = js.getInt("status");
+//                                if (status == 1) {
+//                                    holder.btnInProgress.setText(R.string.que_ren_song_da);
+//                                    bean.getMsg().get(index).setState("2");
+//                                } else if (status == 9) {
+//                                    Toast.makeText(context, R.string.Please_Log_on_again, Toast.LENGTH_SHORT).show();
+//                                    MyApplication.saveLogin(null);
+//                                    context.startActivity(new Intent(context, LoginActivity.class));
+//                                } else if (status == 3) {
+//                                    Toast.makeText(context, R.string.chang_shi_jian_wei_cao_zuo_gai, Toast.LENGTH_SHORT).show();
+//                                    bean.getMsg().remove(index);
+//                                    notifyItemRemoved(index);
+//                                    notifyDataSetChanged();
+////                        notifyItemRangeChanged(index,bean.getMsg().size());
+//                                } else {
+//                                    Toast.makeText(context, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//                    httpUtils.addParam("orderid", id).addParams("shopid", MyApplication.getLogin().getShopId()).addParams("token", MyApplication.getLogin().getToken())
+//                            .addParams("aftertime", tx);
+//                    httpUtils.clicent();
+//                }
+//            }).setTitleText("请选择送达所需时间")
+//                    .setSubmitText(context.getString(R.string.text_ok))
+//                    .setCancelText(context.getString(R.string.text_cancel))
+//                    .build();
+//            pvOptions.setPicker(items);
+//            pvOptions.show();
+//        }
     }
 
     @Override

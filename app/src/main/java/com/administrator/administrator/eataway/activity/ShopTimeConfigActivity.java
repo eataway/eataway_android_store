@@ -71,29 +71,29 @@ public class ShopTimeConfigActivity extends BaseActivity {
 
     @Override
     protected void initDate() {
-        week = getIntent().getIntExtra("date", -1);
-        if (week == 0) {
-            tvNotice.setVisibility(View.VISIBLE);
-        }else {
-            String openAndclose = getIntent().getStringExtra("openAndclose");
-            if (!"".equals(openAndclose)) {
-                String[] allTime = openAndclose.split(",");
-                for (int i=0;i<allTime.length;i++) {
-                    String[] time = allTime[i].split("-");
-                    for (int j=0;j<time.length;j++) {
-                        if (i == 0 && j == 0) {
-                            tvActivityShopTimeConfigOpen.setText(time[j]);
-                        }else if (i == 0 && j == 1) {
-                            tvActivityShopTimeConfigClose.setText(time[j]);
-                        }else if (i == 1 && j == 0) {
-                            tvActivityShopTimeConfigSecondOpen.setText(time[j]);
-                        }else if (i == 1 && j == 1) {
-                            tvActivityShopTimeConfigSecondClose.setText(time[j]);
-                        }
-                    }
-                }
-            }
-        }
+//        week = getIntent().getIntExtra("date", -1);
+//        if (week == 0) {
+//            tvNotice.setVisibility(View.VISIBLE);
+//        }else {
+//            String openAndclose = getIntent().getStringExtra("openAndclose");
+//            if (!"".equals(openAndclose)) {
+//                String[] allTime = openAndclose.split(",");
+//                for (int i=0;i<allTime.length;i++) {
+//                    String[] time = allTime[i].split("-");
+//                    for (int j=0;j<time.length;j++) {
+//                        if (i == 0 && j == 0) {
+//                            tvActivityShopTimeConfigOpen.setText(time[j]);
+//                        }else if (i == 0 && j == 1) {
+//                            tvActivityShopTimeConfigClose.setText(time[j]);
+//                        }else if (i == 1 && j == 0) {
+//                            tvActivityShopTimeConfigSecondOpen.setText(time[j]);
+//                        }else if (i == 1 && j == 1) {
+//                            tvActivityShopTimeConfigSecondClose.setText(time[j]);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -115,6 +115,10 @@ public class ShopTimeConfigActivity extends BaseActivity {
     }
 
     private void initMessage() {
+        Intent i = getIntent();
+        Bundle data = i.getBundleExtra("data");
+        tvActivityShopTimeConfigOpen.setText(data.getString("open"));
+        tvActivityShopTimeConfigClose.setText(data.getString("close"));
     }
 
     private String getTime(Date date) {
@@ -196,16 +200,15 @@ public class ShopTimeConfigActivity extends BaseActivity {
                         @Override
                         public void onResponse(String response, int id) {
                             hidDialog();
-                            Log.i("gotime", "onResponse: " + response);
                             try {
                                 JSONObject o = new JSONObject(response);
                                 int status = o.getInt("status");
                                 if (status == 0) {
                                     Toast.makeText(ShopTimeConfigActivity.this, R.string.xiu_gai_shi_bai, Toast.LENGTH_SHORT).show();
-                                } else if (status == 1) {
+                                }else if (status == 1) {
                                     Toast.makeText(ShopTimeConfigActivity.this, R.string.xiu_gai_cheng_gong, Toast.LENGTH_SHORT).show();
                                     finish();
-                                } else if (status == 9) {
+                                }else if (status == 9) {
                                     Toast.makeText(ShopTimeConfigActivity.this, R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
                                     MyApplication.saveLogin(null);
                                     goToActivity(LoginActivity.class);
@@ -217,18 +220,52 @@ public class ShopTimeConfigActivity extends BaseActivity {
                     };
                     httpUtils.addParam("shopid", MyApplication.getLogin().getShopId());
                     httpUtils.addParam("token", MyApplication.getLogin().getToken());
-                    if (week != -1) {
-                        httpUtils.addParam("week", week + "");
-                    }
-                    String time = tvActivityShopTimeConfigOpen.getText().toString().trim() + "-" +
-                            tvActivityShopTimeConfigClose.getText().toString().trim();
-                    if (tvActivityShopTimeConfigSecondOpen.getText().length() != 0) {
-                        time = time + "," + tvActivityShopTimeConfigSecondOpen.getText().toString().trim() + "-" +
-                                tvActivityShopTimeConfigSecondClose.getText().toString().trim();
-                    }
-                    Log.i("gotime", "gotime:" + time);
-                    httpUtils.addParam("gotime", time);
+                    httpUtils.addParam("gotime", tvActivityShopTimeConfigOpen.getText().toString().trim() + "-" +
+                            tvActivityShopTimeConfigClose.getText().toString().trim());
                     httpUtils.clicent();
+//                    HttpUtils httpUtils = new HttpUtils(Contants.URL_EDITTIME) {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            hidDialog();
+//                            Toast.makeText(ShopTimeConfigActivity.this, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            hidDialog();
+//                            Log.i("gotime", "onResponse: " + response);
+//                            try {
+//                                JSONObject o = new JSONObject(response);
+//                                int status = o.getInt("status");
+//                                if (status == 0) {
+//                                    Toast.makeText(ShopTimeConfigActivity.this, R.string.xiu_gai_shi_bai, Toast.LENGTH_SHORT).show();
+//                                } else if (status == 1) {
+//                                    Toast.makeText(ShopTimeConfigActivity.this, R.string.xiu_gai_cheng_gong, Toast.LENGTH_SHORT).show();
+//                                    finish();
+//                                } else if (status == 9) {
+//                                    Toast.makeText(ShopTimeConfigActivity.this, R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
+//                                    MyApplication.saveLogin(null);
+//                                    goToActivity(LoginActivity.class);
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//                    httpUtils.addParam("shopid", MyApplication.getLogin().getShopId());
+//                    httpUtils.addParam("token", MyApplication.getLogin().getToken());
+//                    if (week != -1) {
+//                        httpUtils.addParam("week", week + "");
+//                    }
+//                    String time = tvActivityShopTimeConfigOpen.getText().toString().trim() + "-" +
+//                            tvActivityShopTimeConfigClose.getText().toString().trim();
+//                    if (tvActivityShopTimeConfigSecondOpen.getText().length() != 0) {
+//                        time = time + "," + tvActivityShopTimeConfigSecondOpen.getText().toString().trim() + "-" +
+//                                tvActivityShopTimeConfigSecondClose.getText().toString().trim();
+//                    }
+//                    Log.i("gotime", "gotime:" + time);
+//                    httpUtils.addParam("gotime", time);
+//                    httpUtils.clicent();
                 } else {
                     hidDialog();
                     ToastUtils.showToast(R.string.token_yan_zheng_shi_bai, ShopTimeConfigActivity.this);

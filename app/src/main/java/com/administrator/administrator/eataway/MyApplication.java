@@ -224,7 +224,6 @@ public class MyApplication extends MobApplication {
     }
 
     // /退出整个应用
-
     public void exitApp() {
         for (Activity activity : activityStack) {
             if (activity != null) {
@@ -232,6 +231,7 @@ public class MyApplication extends MobApplication {
             }
         }
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);

@@ -1,5 +1,6 @@
 package com.administrator.administrator.eataway.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.view.PagerAdapter;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 import com.administrator.administrator.eataway.MyApplication;
 import com.administrator.administrator.eataway.R;
+import com.administrator.administrator.eataway.activity.LoginActivity;
+import com.administrator.administrator.eataway.activity.MainActivity;
 import com.administrator.administrator.eataway.adapter.OrderCompletedAdapter;
 import com.administrator.administrator.eataway.adapter.OrderProgressAdapter;
 import com.administrator.administrator.eataway.bean.MyOrder;
@@ -138,13 +141,13 @@ public class OrderPage extends BaseFragment {
     }
 
     private void initData() {
+        setRefreshing();
         if (MyApplication.getLogin()!=null) {
             HttpUtils httpUtils = new HttpUtils(Contants.URL_NORDERLIST) {
                 @Override
                 public void onError(Call call, Exception e, int id) {
                     refreshComplete();
                     ToastUtils.showToast(R.string.please_check_your_network_connection,_mActivity);
-//                    Toast.makeText(_mActivity, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -157,12 +160,16 @@ public class OrderPage extends BaseFragment {
                             bean = new Gson().fromJson(response, YorderListBean.class);
                             if (bean.getMsg().size() == 0)
                                 ToastUtils.showToast(R.string.dang_qian_wu_ding_dan, _mActivity);
-//                                Toast.makeText(_mActivity, R.string.dang_qian_wu_ding_dan, Toast.LENGTH_SHORT).show();
                             orderProgressAdapter = new OrderProgressAdapter(getContext(), bean);
                             rvInProgress.setAdapter(orderProgressAdapter);
-                        } else {
+                        }
+                        else if (status == 0){
                             ToastUtils.showToast(R.string.huo_qu_shi_bai, _mActivity);
-//                            Toast.makeText(_mActivity, R.string.huo_qu_shi_bai, Toast.LENGTH_SHORT).show();
+                        }else if (status == 9){
+                            ToastUtils.showToast(R.string.Please_Log_on_again, _mActivity);
+                            MyApplication.saveLogin(null);
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            getActivity().finish();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -173,7 +180,6 @@ public class OrderPage extends BaseFragment {
             httpUtils.clicent();
         }else {
             ToastUtils.showToast(R.string.Please_Log_on_again, _mActivity);
-//            Toast.makeText(_mActivity, R.string.Please_Log_on_again, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -313,7 +319,6 @@ public class OrderPage extends BaseFragment {
             public void onError(Call call, Exception e, int id) {
                 refreshComplete();
                 ToastUtils.showToast(R.string.please_check_your_network_connection, _mActivity);
-//                Toast.makeText(_mActivity, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -335,7 +340,6 @@ public class OrderPage extends BaseFragment {
                         }
                     } else {
                         ToastUtils.showToast(R.string.huo_qu_shi_bai,_mActivity);
-//                        Toast.makeText(_mActivity, R.string.huo_qu_shi_bai, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -350,7 +354,6 @@ public class OrderPage extends BaseFragment {
     class refreshClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            setRefreshing();
             if (flag == 0) {
                 initData();
             } else {
@@ -362,12 +365,14 @@ public class OrderPage extends BaseFragment {
     }
 
     private void setRefreshing() {
-        rlNewsdetails.setVisibility(View.VISIBLE);
-        rlNewsdetails.getParent().requestDisallowInterceptTouchEvent(true);
+//        rlNewsdetails.setVisibility(View.VISIBLE);
+//        rlNewsdetails.getParent().requestDisallowInterceptTouchEvent(true);
+        MainActivity.mainActivity.showDialog();
     }
 
     private void refreshComplete() {
-        rlNewsdetails.setVisibility(View.GONE);
-        rlNewsdetails.getParent().requestDisallowInterceptTouchEvent(true);
+//        rlNewsdetails.setVisibility(View.GONE);
+//        rlNewsdetails.getParent().requestDisallowInterceptTouchEvent(true);
+        MainActivity.mainActivity.hidDialog();
     }
 }

@@ -77,9 +77,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void Login() {
+        showDialog();
         httpUtils = new HttpUtils(Contants.URL_LOGIN) {
             @Override
             public void onError(Call call, Exception e, int id) {
+                hidDialog();
                 Toast.makeText(LoginActivity.this, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
                 btnActivityLoginLogin.setClickable(true);
                 btnActivityLoginLogin.setBackgroundResource(R.drawable.shape_blue);
@@ -87,6 +89,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response, int id) {
+                hidDialog();
                 try {
                     JSONObject object = new JSONObject(response);
                     int status = object.getInt("status");

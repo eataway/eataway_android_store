@@ -18,6 +18,7 @@ import com.administrator.administrator.eataway.activity.CertificationActivity;
 import com.administrator.administrator.eataway.activity.CertificationUpActivity;
 import com.administrator.administrator.eataway.activity.FeedBackActivity;
 import com.administrator.administrator.eataway.activity.LoginActivity;
+import com.administrator.administrator.eataway.activity.MainActivity;
 import com.administrator.administrator.eataway.activity.SettingActivity;
 import com.administrator.administrator.eataway.activity.ShopDetailActivity;
 import com.administrator.administrator.eataway.activity.ShopIncomeAcitivity;
@@ -93,6 +94,7 @@ public class PersonPage extends BaseFragment {
     Login login = MyApplication.getLogin();
 
     private boolean isFinsh = true;
+    private int currentType = CLOSE;
 
     @Override
     protected Map<String, String> getParams() {
@@ -157,15 +159,17 @@ public class PersonPage extends BaseFragment {
         login = MyApplication.getLogin();
         if (isFinsh) {
             if (login != null) {
+                MainActivity.mainActivity.showDialog();
                 httpUtils = new HttpUtils(Contants.URL_SHOPMSG) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        MainActivity.mainActivity.hidDialog();
                         ToastUtils.showToast(R.string.please_check_your_network_connection,_mActivity);
-//                    Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        MainActivity.mainActivity.hidDialog();
                         try {
                             JSONObject o = new JSONObject(response);
                             int status = o.getInt("status");
@@ -203,6 +207,7 @@ public class PersonPage extends BaseFragment {
                                     MyApplication.saveLogin(login);
                                 }
                                 if ("2".equals(bean.getMsg().getState())) {
+                                    //未营业
                                     iscertification = true;
                                     tvPersonUserName.setText(bean.getMsg().getShopname());
                                     tvPersonUserPhone.setVisibility(View.VISIBLE);
@@ -210,7 +215,8 @@ public class PersonPage extends BaseFragment {
                                     tvIncomeInfo.setText("$" + bean.getMsg().getAllmoney());
                                     tvSalesInfo.setText(bean.getMsg().getNums() + "");
                                     GlideUtils.load(getContext(), bean.getMsg().getShophead(), cimgPersonUserIcon, GlideUtils.Shape.ShopIcon);
-                                    tbIsOpen.setChecked(false);
+//                                    tbIsOpen.setChecked(false);
+                                    currentType = CLOSE;
                                     tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                                     tbIsOpen.setClickable(true);
                                 } else if ("3".equals(bean.getMsg().getState())) {
@@ -220,10 +226,12 @@ public class PersonPage extends BaseFragment {
                                     tvIncomeInfo.setText("$0");
                                     tvSalesInfo.setText("0");
                                     GlideUtils.load(getContext(), "", cimgPersonUserIcon, GlideUtils.Shape.ShopIcon);
-                                    tbIsOpen.setChecked(false);
+//                                    tbIsOpen.setChecked(false);
+                                    currentType = CLOSE;
                                     tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                                     tbIsOpen.setClickable(false);
                                 } else if ("1".equals(bean.getMsg().getState())) {
+                                    //营业
                                     iscertification = true;
                                     tvPersonUserName.setText(bean.getMsg().getShopname());
                                     tvPersonUserPhone.setVisibility(View.VISIBLE);
@@ -231,9 +239,12 @@ public class PersonPage extends BaseFragment {
                                     tvSalesInfo.setText(bean.getMsg().getNums() + "");
                                     tvIncomeInfo.setText("$" + bean.getMsg().getAllmoney());
                                     GlideUtils.load(getContext(), bean.getMsg().getShophead(), cimgPersonUserIcon, GlideUtils.Shape.ShopIcon);
+//                                    tbIsOpen.setChecked(true);
+                                    currentType = OPEN;
                                     tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_on);
                                     tbIsOpen.setClickable(true);
                                 } else if ("4".equals(bean.getMsg().getState())) {
+                                    //退出加盟
                                     iscertification = true;
                                     tvPersonUserName.setText(bean.getMsg().getShopname());
                                     tvPersonUserPhone.setVisibility(View.VISIBLE);
@@ -241,7 +252,8 @@ public class PersonPage extends BaseFragment {
                                     tvSalesInfo.setText(bean.getMsg().getNums() + "");
                                     tvIncomeInfo.setText("$" + bean.getMsg().getAllmoney());
                                     GlideUtils.load(getContext(), bean.getMsg().getShophead(), cimgPersonUserIcon, GlideUtils.Shape.ShopIcon);
-                                    tbIsOpen.setChecked(false);
+//                                    tbIsOpen.setChecked(false);
+                                    currentType = CLOSE;
                                     tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                                     tbIsOpen.setClickable(true);
                                 }
@@ -253,13 +265,12 @@ public class PersonPage extends BaseFragment {
                                 GlideUtils.load(getContext(), "", cimgPersonUserIcon, GlideUtils.Shape.ShopIcon);
                                 tvPersonUserName.setText(getString(R.string.wei_deng_lu));
                                 tvPersonUserPhone.setVisibility(View.GONE);
+                                currentType = CLOSE;
                                 tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                                 tbIsOpen.setClickable(false);
-                                //                        Intent i = new Intent(getContext(), LoginActivity.class);
-                                //                        startActivity(i);
-                                //                        ((MainActivity) getContext()).finish();
                             } else if (status == 2) {    //未认证
                                 iscertification = false;
+                                currentType = CLOSE;
                                 tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                                 tbIsOpen.setClickable(false);
                                 tvPersonUserName.setText(getResources().getString(R.string.wei_ren_zheng));
@@ -278,6 +289,7 @@ public class PersonPage extends BaseFragment {
                 GlideUtils.load(getContext(), "", cimgPersonUserIcon, GlideUtils.Shape.ShopIcon);
                 tvPersonUserName.setText(getString(R.string.wei_deng_lu));
                 tvPersonUserPhone.setVisibility(View.GONE);
+                currentType = CLOSE;
                 tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                 tbIsOpen.setClickable(false);
             }
@@ -295,7 +307,7 @@ public class PersonPage extends BaseFragment {
         tbIsOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+                if (currentType == CLOSE) {
                     if (iscertification) {
                         editState(OPEN);
                     } else {
@@ -359,15 +371,17 @@ public class PersonPage extends BaseFragment {
     }
 
     private void editState(final int state) {
+        MainActivity.mainActivity.showDialog();
         httpUtils = new HttpUtils(Contants.URL_EDITSTATE) {
             @Override
             public void onError(Call call, Exception e, int id) {
+                MainActivity.mainActivity.hidDialog();
                 ToastUtils.showToast(R.string.please_check_your_network_connection, getContext());
-//                Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(String response, int id) {
+                MainActivity.mainActivity.hidDialog();
                 try {
                     JSONObject o = new JSONObject(response);
                     int status = o.getInt("status");
@@ -381,10 +395,11 @@ public class PersonPage extends BaseFragment {
                         }
                     } else if (status == 0) {
                         ToastUtils.showToast(R.string.please_check_your_network_connection, getContext());
-//                        Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
                     } else if (status == 9) {
                         Toast.makeText(getContext(), R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
                         MyApplication.saveLogin(null);
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

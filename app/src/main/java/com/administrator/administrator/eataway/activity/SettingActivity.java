@@ -74,15 +74,17 @@ public class SettingActivity extends BaseActivity {
                 goToActivity(AboutUsActivity.class);
                 break;
             case R.id.btn_activity_setting_sign_out:
+                showDialog();
                 HttpUtils httpUtils = new HttpUtils(Contants.URL_LOGOUT) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        hidDialog();
                         ToastUtils.showToast(R.string.please_check_your_network_connection,SettingActivity.this);
-//                        Toast.makeText(SettingActivity.this, R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        hidDialog();
                         try {
                             JSONObject o = new JSONObject(response);
                             int status = o.getInt("status");
@@ -91,11 +93,13 @@ public class SettingActivity extends BaseActivity {
                             }else if (status == 9) {
                                 Toast.makeText(SettingActivity.this, R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
                                 MyApplication.saveLogin(null);
+                                goToActivity(LoginActivity.class);
                                 finish();
                             }else if (status == 1) {
                                 Toast.makeText(SettingActivity.this, R.string.ting_zhi_ying_ye, Toast.LENGTH_SHORT).show();
 //                                JPushInterface.deleteAlias(SettingActivity.this, Integer.parseInt(MyApplication.getLogin().getShopId()));
                                 MyApplication.saveLogin(null);
+                                goToActivity(LoginActivity.class);
                                 finish();
                             }
                         } catch (JSONException e) {

@@ -111,6 +111,7 @@ public class MenuPage extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (login != null) {
+            MainActivity.mainActivity.showDialog();
             initData();
         }else {
             ToastUtils.showToast(R.string.token_yan_zheng_shi_bai, getContext());
@@ -166,7 +167,6 @@ public class MenuPage extends BaseFragment {
     }
 
     public void initData() {
-        MainActivity.mainActivity.showDialog();
         HttpUtils httpUtils=new HttpUtils(Contants.URL_CATEGORY) {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -185,6 +185,11 @@ public class MenuPage extends BaseFragment {
                         adapter = new MenuListAdapter(getContext(),bean);
                         if (rvMenuPage != null)
                             rvMenuPage.setAdapter(adapter);
+                    }else if (status == 9) {
+                        ToastUtils.showToast(R.string.Please_Log_on_again, _mActivity);
+                        MyApplication.saveLogin(null);
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -215,25 +220,27 @@ public class MenuPage extends BaseFragment {
     private void initTopBar() {
         watcher = new MyWatcher();
         tpMenuPage.setTbCenterTv(R.string.cai_dan_guan_li, R.color.color_white);
-        tpMenuPage.setTbRightIv(R.mipmap.icon_menu, new View.OnClickListener() {
+//        tpMenuPage.setTbRightIv(R.mipmap.icon_menu, new View.OnClickListener() {
+        tpMenuPage.setTbRightIv(R.drawable.img_icon_add_white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                initEditText();
-//                final AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
-//                builder.setTitle(R.string.xin_zeng_cai_dan);
-//                builder.setView(editText);
-//                builder.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String trim = editText.getText().toString().trim();
-//                        if (trim.equals("")){
-//                            Toast.makeText(_mActivity, R.string.qing_shu_ru_xin_zeng_jia_de_cai_dan, Toast.LENGTH_SHORT).show();
-//                        }else {
-//                            addMunu(trim);
-//                        }
-//                    }
-//                }).setNegativeButton(R.string.text_cancel,null).show();
-               showFilterWindow(getContext(), popMenu, v, MyApplication.width, 0);
+                initEditText();
+                final AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.xin_zeng_cai_dan);
+                builder.setView(editText);
+                builder.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String trim = editText.getText().toString().trim();
+                        if (trim.equals("")){
+                            Toast.makeText(_mActivity, R.string.qing_shu_ru_xin_zeng_jia_de_cai_dan, Toast.LENGTH_SHORT).show();
+                        }else {
+                            MainActivity.mainActivity.showDialog();
+                            addMunu(trim);
+                        }
+                    }
+                }).setNegativeButton(R.string.text_cancel,null).show();
+//               showFilterWindow(getContext(), popMenu, v, MyApplication.width, 0);
             }
         });
     }
@@ -247,18 +254,21 @@ public class MenuPage extends BaseFragment {
 
             @Override
             public void onResponse(String response, int id) {
-                MainActivity.mainActivity.hidDialog();
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     int status = jsonObject.getInt("status");
                     if (status==1){
-                        Toast.makeText(_mActivity, R.string.tian_jia_cheng_gong, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(_mActivity, R.string.tian_jia_cheng_gong, Toast.LENGTH_SHORT).show();
                         initData();
                     }else if (status==9){
+                        MainActivity.mainActivity.hidDialog();
                         Toast.makeText(getContext(), R.string.Please_Log_on_again, Toast.LENGTH_SHORT).show();
                         MyApplication.saveLogin(null);
                         getContext().startActivity(new Intent(getContext(), LoginActivity.class));
                         getActivity().finish();
+                    }else {
+                        MainActivity.mainActivity.hidDialog();
+                        ToastUtils.showToast(R.string.please_check_your_network_connection, getActivity());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
