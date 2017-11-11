@@ -157,6 +157,160 @@ public class PersonPage extends BaseFragment {
         super.onResume();
         i = new Intent();
         login = MyApplication.getLogin();
+        initData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        isFinsh = false;
+    }
+
+    private void initToggleButton() {
+        tbIsOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (currentType == CLOSE) {
+                    if (iscertification) {
+                        editState(OPEN);
+                    } else {
+                        Toast.makeText(getContext(), R.string.nin_dang_qian_de_zhang_hao_zheng_zai_yan_zheng_zhong, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    editState(CLOSE);
+                }
+            }
+        });
+    }
+
+    private void checkCertification() {
+        httpUtils = new HttpUtils(Contants.URL_SHOPMSG) {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    int status = object.getInt("status");
+                    if (status == 2) {  //未认证
+                        iscertification = false;
+                        i.setClass(getContext(), CertificationUpActivity.class);
+                        startActivity(i);
+                    } else if (status == 1) {     //已认证，获取信息
+                        iscertification = true;
+                        UpShopBean bean = new Gson().fromJson(response, UpShopBean.class);
+                        login.setShopName(bean.getMsg().getShopname());
+                        login.setHead(bean.getMsg().getShophead());
+                        login.setPhone(bean.getMsg().getMobile());
+                        login.setCertification(Integer.parseInt(bean.getMsg().getState()));
+                        login.setLocation_text(bean.getMsg().getDetailed_address());
+                        MyApplication.saveLogin(login);
+                        if (MyApplication.getLogin().getCertification() == 3) { //认证中
+                            Toast.makeText(getContext(), R.string.nin_dang_qian_de_zhang_hao_zheng_zai_yan_zheng_zhong, Toast.LENGTH_SHORT).show();
+                        } else {
+                            i.setClass(getContext(), CertificationActivity.class);
+                            startActivity(i);
+                        }
+                    } else if (status == 9) {
+                        Toast.makeText(getContext(), R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        if (MyApplication.getLogin() != null) {
+            httpUtils.addParam("shopid", MyApplication.getLogin().getShopId());
+            httpUtils.addParam("token", MyApplication.getLogin().getToken());
+            httpUtils.clicent();
+        } else {
+            Toast.makeText(getContext(), R.string.nin_dang_qian_hai_wei_deng_lu, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void editState(final int state) {
+        MainActivity.mainActivity.showDialog();
+        httpUtils = new HttpUtils(Contants.URL_EDITSTATE) {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                MainActivity.mainActivity.hidDialog();
+                ToastUtils.showToast(R.string.please_check_your_network_connection, getContext());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                MainActivity.mainActivity.hidDialog();
+                try {
+                    JSONObject o = new JSONObject(response);
+                    int status = o.getInt("status");
+                    if (status == 1) {
+                        if (currentType == CLOSE) {
+                            currentType = OPEN;
+                            tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_on);
+                            Toast.makeText(_mActivity, R.string.ying_ye_shi_jian, Toast.LENGTH_SHORT).show();
+                        } else {
+                            currentType = CLOSE;
+                            tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
+                            Toast.makeText(_mActivity, R.string.ting_zhi_ying_ye, Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (status == 0) {
+//                        ToastUtils.showToast(R.string.please_check_your_network_connection, getContext());
+                        initData();
+                    } else if (status == 9) {
+                        Toast.makeText(getContext(), R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
+                        MyApplication.saveLogin(null);
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        httpUtils.addParam("shopid", MyApplication.getLogin().getShopId());
+        httpUtils.addParam("state", state + "");
+        httpUtils.addParam("token", MyApplication.getLogin().getToken());
+        httpUtils.clicent();
+    }
+
+    @OnClick({R.id.rl_person_open, R.id.rl_person_income, R.id.rl_person_certification, R.id.rl_person_settings, R.id.rl_person_feedback})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_person_open:
+                break;
+            case R.id.rl_person_income:
+                if (iscertification) {
+                    i.setClass(getContext(), ShopIncomeAcitivity.class);
+                    startActivity(i);
+                }else {
+                    ToastUtils.showToast(R.string.nin_dang_qian_hai_wei_ren_zheng, getContext());
+                }
+                break;
+            case R.id.rl_person_certification:
+                checkCertification();
+                break;
+            case R.id.rl_person_settings:
+                i.setClass(getContext(), SettingActivity.class);
+                startActivity(i);
+                break;
+            case R.id.rl_person_feedback:
+                if (MyApplication.getLogin() != null) {
+                    i.setClass(getContext(), FeedBackActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getContext(), R.string.nin_dang_qian_hai_wei_deng_lu, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    private void initData() {
         if (isFinsh) {
             if (login != null) {
                 MainActivity.mainActivity.showDialog();
@@ -293,153 +447,6 @@ public class PersonPage extends BaseFragment {
                 tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
                 tbIsOpen.setClickable(false);
             }
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        isFinsh = false;
-    }
-
-    private void initToggleButton() {
-        tbIsOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (currentType == CLOSE) {
-                    if (iscertification) {
-                        editState(OPEN);
-                    } else {
-                        Toast.makeText(getContext(), R.string.nin_dang_qian_de_zhang_hao_zheng_zai_yan_zheng_zhong, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    editState(CLOSE);
-                }
-            }
-        });
-    }
-
-    private void checkCertification() {
-        httpUtils = new HttpUtils(Contants.URL_SHOPMSG) {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                try {
-                    JSONObject object = new JSONObject(response);
-                    int status = object.getInt("status");
-                    if (status == 2) {  //未认证
-                        iscertification = false;
-                        i.setClass(getContext(), CertificationUpActivity.class);
-                        startActivity(i);
-                    } else if (status == 1) {     //已认证，获取信息
-                        iscertification = true;
-                        UpShopBean bean = new Gson().fromJson(response, UpShopBean.class);
-                        login.setShopName(bean.getMsg().getShopname());
-                        login.setHead(bean.getMsg().getShophead());
-                        login.setPhone(bean.getMsg().getMobile());
-                        login.setCertification(Integer.parseInt(bean.getMsg().getState()));
-                        login.setLocation_text(bean.getMsg().getDetailed_address());
-                        MyApplication.saveLogin(login);
-                        if (MyApplication.getLogin().getCertification() == 3) { //认证中
-                            Toast.makeText(getContext(), R.string.nin_dang_qian_de_zhang_hao_zheng_zai_yan_zheng_zhong, Toast.LENGTH_SHORT).show();
-                        } else {
-                            i.setClass(getContext(), CertificationActivity.class);
-                            startActivity(i);
-                        }
-                    } else if (status == 9) {
-                        Toast.makeText(getContext(), R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), R.string.please_check_your_network_connection, Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        if (MyApplication.getLogin() != null) {
-            httpUtils.addParam("shopid", MyApplication.getLogin().getShopId());
-            httpUtils.addParam("token", MyApplication.getLogin().getToken());
-            httpUtils.clicent();
-        } else {
-            Toast.makeText(getContext(), R.string.nin_dang_qian_hai_wei_deng_lu, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void editState(final int state) {
-        MainActivity.mainActivity.showDialog();
-        httpUtils = new HttpUtils(Contants.URL_EDITSTATE) {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                MainActivity.mainActivity.hidDialog();
-                ToastUtils.showToast(R.string.please_check_your_network_connection, getContext());
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                MainActivity.mainActivity.hidDialog();
-                try {
-                    JSONObject o = new JSONObject(response);
-                    int status = o.getInt("status");
-                    if (status == 1) {
-                        if (state == OPEN) {
-                            tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_on);
-                            Toast.makeText(_mActivity, R.string.ying_ye_shi_jian, Toast.LENGTH_SHORT).show();
-                        } else {
-                            tbIsOpen.setBackgroundResource(R.drawable.img_switch_icon_off);
-                            Toast.makeText(_mActivity, R.string.ting_zhi_ying_ye, Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (status == 0) {
-                        ToastUtils.showToast(R.string.please_check_your_network_connection, getContext());
-                    } else if (status == 9) {
-                        Toast.makeText(getContext(), R.string.token_yan_zheng_shi_bai, Toast.LENGTH_SHORT).show();
-                        MyApplication.saveLogin(null);
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        httpUtils.addParam("shopid", MyApplication.getLogin().getShopId());
-        httpUtils.addParam("state", state + "");
-        httpUtils.addParam("token", MyApplication.getLogin().getToken());
-        httpUtils.clicent();
-    }
-
-    @OnClick({R.id.rl_person_open, R.id.rl_person_income, R.id.rl_person_certification, R.id.rl_person_settings, R.id.rl_person_feedback})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.rl_person_open:
-                break;
-            case R.id.rl_person_income:
-                if (iscertification) {
-                    i.setClass(getContext(), ShopIncomeAcitivity.class);
-                    startActivity(i);
-                }else {
-                    ToastUtils.showToast(R.string.nin_dang_qian_hai_wei_ren_zheng, getContext());
-                }
-                break;
-            case R.id.rl_person_certification:
-                checkCertification();
-                break;
-            case R.id.rl_person_settings:
-                i.setClass(getContext(), SettingActivity.class);
-                startActivity(i);
-                break;
-            case R.id.rl_person_feedback:
-                if (MyApplication.getLogin() != null) {
-                    i.setClass(getContext(), FeedBackActivity.class);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getContext(), R.string.nin_dang_qian_hai_wei_deng_lu, Toast.LENGTH_SHORT).show();
-                }
-                break;
         }
     }
 }
