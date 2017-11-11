@@ -157,7 +157,12 @@ public class PersonPage extends BaseFragment {
         super.onResume();
         i = new Intent();
         login = MyApplication.getLogin();
-        initData();
+        if (login == null) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        }else {
+            initData();
+        }
     }
 
     @Override
