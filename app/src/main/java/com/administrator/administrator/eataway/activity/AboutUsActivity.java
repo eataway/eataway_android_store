@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 
 public class AboutUsActivity extends BaseActivity {
 
-    private final String VERSION = "v1.0.2";
+    private final String VERSION = "v1.0.3";
 
     @Bind(R.id.tb_about_us)
     TopBar tbAboutUs;

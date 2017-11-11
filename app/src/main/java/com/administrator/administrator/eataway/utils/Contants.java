@@ -5,8 +5,8 @@ package com.administrator.administrator.eataway.utils;
  */
 
 public interface Contants {
-//    String URL = "http://wm.sawfree.com/index.php/server/";
-    String URL = "http://192.168.2.126/tp/index.php/server/";
+    String URL = "http://wm.sawfree.com/index.php/server/";
+//    String URL = "http://192.168.2.126/tp/index.php/server/";
 //    String URL = "http://108.61.96.39/index.php/server/";
 //    String URL = "http://www21mxwx.cn/tp/index.php/server/";
 

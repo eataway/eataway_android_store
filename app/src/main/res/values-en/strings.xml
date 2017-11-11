@@ -45,6 +45,8 @@
     <string name="app_name">EatAway</string>
     <string name="yi_dao_zhang">Already billed</string>
     <string name="zheng_zai_shang_chuan">Now Loading</string>
+    <string name="xiu_gai_ming_cheng">Modify Name</string>
+    <string name="shan_chu_cai_dan">Delete Menu</string>
     <string name="nei_rong_bu_neng_wei_kong">Content empty</string>
     <string name="shang_chuan_tu_pian_bu_neng_wei_kong">Picture can\'t empty</string>
     <string name="ying_ye_zhuang_tai">Open</string>

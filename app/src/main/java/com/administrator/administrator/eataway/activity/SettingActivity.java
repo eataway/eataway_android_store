@@ -99,7 +99,7 @@ public class SettingActivity extends BaseActivity {
                                 Toast.makeText(SettingActivity.this, R.string.ting_zhi_ying_ye, Toast.LENGTH_SHORT).show();
 //                                JPushInterface.deleteAlias(SettingActivity.this, Integer.parseInt(MyApplication.getLogin().getShopId()));
                                 MyApplication.saveLogin(null);
-                                goToActivity(LoginActivity.class);
+//                                goToActivity(LoginActivity.class);
                                 finish();
                             }
                         } catch (JSONException e) {

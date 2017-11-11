@@ -72,10 +72,10 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        if (bean == null || bean.getMsg() == null || bean.getMsg().size() == 0) {
-            return 0;
+        if (bean.getMsg()!=null) {
+            return bean.getMsg().size();
         }
-        return bean.getMsg().size();
+        return 0;
     }
 
     private void initMenuList(MenuHolder holder, final int position) {
@@ -189,7 +189,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         builder.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String trim = editText.getText().toString().trim();
+                final String trim = editText.getText().toString().trim();
                 if (trim.equals("")) {
                     Toast.makeText(context, R.string.qing_shu_ru_xin_zeng_jia_de_cai_dan, Toast.LENGTH_SHORT).show();
                 } else {
@@ -206,6 +206,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 int status = jsonObject.getInt("status");
                                 if (status==1){
                                     Toast.makeText(context, R.string.xiu_gai_cheng_gong, Toast.LENGTH_SHORT).show();
+                                    bean.getMsg().get(po).setCname(trim);
+                                    notifyDataSetChanged();
                                 }else if (status==9){
                                     Toast.makeText(context, R.string.Please_Log_on_again, Toast.LENGTH_SHORT).show();
                                     MyApplication.saveLogin(null);
